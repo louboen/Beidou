@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>春季中医养生</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{display:flex;justify-content:center;align-items:center;height:100vh;background:#1a1a1a;font-family:'Microsoft YaHei',sans-serif}
+.cover{width:900px;height:500px;background:linear-gradient(135deg,#5aa85a 0%,#7bc97b 50%,#9ce89c 100%);position:relative;overflow:hidden}
+.content{position:relative;z-index:10;text-align:center;padding-top:100px;color:white;text-shadow:2px 2px 8px rgba(0,0,0,0.5)}
+.title{font-size:52px;font-weight:bold;letter-spacing:5px;margin-bottom:20px}
+.subtitle{font-size:30px;font-weight:300;letter-spacing:3px;margin-bottom:40px;opacity:0.95}
+.divider{width:180px;height:4px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);margin:0 auto 25px;border-radius:2px}
+.footer{font-size:18px;opacity:0.9;letter-spacing:2px}
+.season{position:absolute;top:15px;left:15px;font-size:16px;opacity:0.4;border:2px solid rgba(255,255,255,0.4);padding:8px 15px;border-radius:8px;background:rgba(255,255,255,0.1)}
+</style>
+</head>
+<body>
+<div class="cover">
+<!-- 太极图 SVG -->
+<svg style="position:absolute;top:20px;right:20px;width:180px;height:180px;opacity:0.3" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="50" fill="#fff" stroke="#fff" stroke-width="1"/>
+<path d="M50,0 A50,50 0 0,1 50,100 A25,25 0 0,1 50,50 A25,25 0 0,0 50,0 Z" fill="#000"/>
+<circle cx="50" cy="25" r="7" fill="#fff"/>
+<circle cx="50" cy="75" r="7" fill="#000"/>
+</svg>
+<!-- 中草药装饰 SVG -->
+<svg style="position:absolute;top:60px;left:30px;width:120px;height:120px;opacity:0.3;transform:rotate(25deg)" viewBox="0 0 100 100">
+<path d="M50,10 Q70,30 50,50 Q30,30 50,10" fill="#fff"/>
+<path d="M50,50 Q70,70 50,90 Q30,70 50,50" fill="#fff"/>
+<line x1="50" y1="10" x2="50" y2="90" stroke="#fff" stroke-width="2"/>
+</svg>
+<svg style="position:absolute:bottom:80px;left:50px;width:100px;height:100px;opacity:0.3;transform:rotate(-35deg)" viewBox="0 0 100 100">
+<ellipse cx="50" cy="50" rx="40" ry="15" fill="#fff"/>
+<ellipse cx="50" cy="50" rx="15" ry="40" fill="#fff"/>
+</svg>
+<!-- 季节标签 -->
+<div class="season">春季养生</div>
+<!-- 主要内容 -->
+<div class="content">
+<div class="title">春季中医养生</div>
+<div class="subtitle">养肝护肝 疏肝理气</div>
+<div class="divider"></div>
+<div class="footer">中医健康科普 · 娄伯恩医师</div>
+</div>
+</div>
+</body></html>

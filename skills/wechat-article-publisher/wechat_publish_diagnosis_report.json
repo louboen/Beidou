@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-18 17:10:50",
+  "access_token": "102_pkiTMvnn60Asarwo...",
+  "problems_identified": [
+    "错误 40007: invalid media_id",
+    "错误 45110: author size out of limit",
+    "错误 53402: 封面裁剪失败"
+  ],
+  "root_causes": [
+    "微信公众号类型/认证限制",
+    "封面图片要求严格",
+    "字符计算方式问题"
+  ],
+  "immediate_solutions": [
+    "手动发布流程",
+    "封面图片模板",
+    "内容格式验证"
+  ],
+  "recommended_actions": [
+    "使用手动流程立即开始发布",
+    "申请微信公众号认证",
+    "创建内容发布计划"
+  ]
+}

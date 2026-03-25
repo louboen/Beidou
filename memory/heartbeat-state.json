@@ -1,0 +1,40 @@
+{
+  "lastChecks": {
+    "backup": 1703275200,
+    "gateway": 1773819480,
+    "feishu_doc": 1703275200
+  },
+  "lastBackupRecord": {
+    "date": "2026-03-18",
+    "time": "12:56:00",
+    "doc_url": "https://feishu.cn/docx/Vcded98VCoYEIsxoOmXcdyvwnQc",
+    "backup_id": "20260318_125148",
+    "permission_doc_url": "https://feishu.cn/docx/TeSid52LJoN67QxOj4dcJItHnVe"
+  },
+  "permission_updates": {
+    "last_update": "2026-03-18 12:58:00",
+    "docs_updated": [
+      "Vcded98VCoYEIsxoOmXcdyvwnQc",
+      "TeSid52LJoN67QxOj4dcJItHnVe"
+    ],
+    "update_type": "permission_instructions_added"
+  },
+  "stats": {
+    "totalHeartbeats": 2,
+    "lastHeartbeat": "2026-03-18 15:38:00",
+    "backupRecordsCreated": 1,
+    "permissionUpdates": 1,
+    "skillsInstalled": 1,
+    "gatewayChecks": 1
+  },
+  "installed_skills": {
+    "wechat-article-publisher": {
+      "installed_at": "2026-03-18 13:30:00",
+      "source": "iamzifei/wechat-article-publisher-skill@wechat-article-publisher",
+      "status": "ready",
+      "requires_config": true,
+      "config_file": ".env",
+      "api_key_source": "https://wx.limyai.com"
+    }
+  }
+}

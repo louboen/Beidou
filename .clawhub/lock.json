@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "liang-tavily-search": {
+      "version": "1.0.1",
+      "installedAt": 1774020783403
+    },
+    "pdf": {
+      "version": "0.1.0",
+      "installedAt": 1774339164730
+    },
+    "wechat-article-publisher": {
+      "version": "1.0.0",
+      "installedAt": 1774401279187
+    }
+  }
+}

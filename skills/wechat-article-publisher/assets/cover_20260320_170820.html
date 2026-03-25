@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>封面</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{display:flex;justify-content:center;align-items:center;height:100vh;background:#1a1a1a;font-family:'Microsoft YaHei',sans-serif}
+.cover{width:900px;height:500px;background:linear-gradient(135deg,#4a8f5a 0%,#58ab6c 50%,#67c87e 100%);position:relative;overflow:hidden}
+/* 太极图背景 */
+.taiji{position:absolute;width:300px;height:300px;top:-50px;right:-50px;opacity:0.1;
+background:radial-gradient(circle at 50% 50%,#fff 50%,#000 50%);
+border-radius:50%;animation:rotate 20s linear infinite}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* 草药装饰 */
+.herb{position:absolute;width:100px;height:100px;opacity:0.15}
+.herb1{top:50px;left:50px;transform:rotate(30deg)}
+.herb2{bottom:80px;right:100px;transform:rotate(-45deg)}
+.herb3{top:150px;left:100px;transform:rotate(60deg)}
+.content{position:relative;z-index:10;text-align:center;padding-top:100px;color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.6)}
+.title{font-size:48px;font-weight:bold;letter-spacing:4px;margin-bottom:15px;
+background:linear-gradient(180deg,#fff 0%,#f0f0f0 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{font-size:28px;font-weight:300;letter-spacing:2px;margin-bottom:30px;opacity:0.95}
+.divider{width:150px;height:3px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent);margin:0 auto 20px}
+.footer{font-size:16px;opacity:0.85;letter-spacing:1px}
+.tcm-badge{position:absolute;bottom:20px;right:20px;font-size:14px;opacity:0.3;
+border:2px solid rgba(255,255,255,0.3);padding:5px 10px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="taiji"></div>
+<div class="herb herb1">🌿</div>
+<div class="herb herb2">🍃</div>
+<div class="herb herb3">🌱</div>
+<div class="content">
+<div class="title">春季风湿病的治疗</div>
+<div class="subtitle">中医辨证施治 标本兼治</div>
+<div class="divider"></div>
+<div class="footer">中医健康科普 · 娄伯恩医师</div>
+</div>
+<div class="tcm-badge">中医文化</div>
+</div>
+</body></html>

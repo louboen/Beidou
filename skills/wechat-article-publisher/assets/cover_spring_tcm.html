@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>春季中医养生</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{display:flex;justify-content:center;align-items:center;height:100vh;background:#1a1a1a;font-family:'Microsoft YaHei',sans-serif}
+.cover{width:900px;height:500px;background:linear-gradient(135deg,#5aa85a 0%,#7bc97b 50%,#9ce89c 100%);position:relative;overflow:hidden}
+/* 太极图 - 右上角 */
+.taiji{position:absolute;width:180px;height:180px;top:20px;right:20px;opacity:0.25;background:radial-gradient(circle at 50% 50%,#ffffff 50%,#000000 50%);border-radius:50%;box-shadow:0 0 20px rgba(255,255,255,0.3)}
+/* 中草药装饰 - 左侧 */
+.herb{position:absolute;font-size:100px;opacity:0.3;text-shadow:0 0 10px rgba(255,255,255,0.5)}
+.herb1{top:60px;left:30px;transform:rotate(25deg)}
+.herb2{bottom:80px;left:50px;transform:rotate(-35deg)}
+.herb3{top:180px;left:80px;transform:rotate(50deg);font-size:80px}
+/* 内容区域 */
+.content{position:relative;z-index:10;text-align:center;padding-top:100px;color:white;text-shadow:2px 2px 8px rgba(0,0,0,0.5)}
+.title{font-size:52px;font-weight:bold;letter-spacing:5px;margin-bottom:20px}
+.subtitle{font-size:30px;font-weight:300;letter-spacing:3px;margin-bottom:40px;opacity:0.95}
+.divider{width:180px;height:4px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);margin:0 auto 25px;border-radius:2px}
+.footer{font-size:18px;opacity:0.9;letter-spacing:2px}
+/* 季节标签 */
+.season{position:absolute;top:15px;left:15px;font-size:16px;opacity:0.4;border:2px solid rgba(255,255,255,0.4);padding:8px 15px;border-radius:8px;background:rgba(255,255,255,0.1)}
+/* 装饰性小元素 */
+.dot{position:absolute;width:8px;height:8px;background:rgba(255,255,255,0.4);border-radius:50%}
+.dot1{top:100px;right:150px}
+.dot2{bottom:120px;right:100px}
+.dot3{top:200px;left:200px}
+</style>
+</head>
+<body>
+<div class="cover">
+<!-- 太极图 -->
+<div class="taiji"></div>
+<!-- 中草药装饰 -->
+<div class="herb herb1">🌿</div>
+<div class="herb herb2">🍃</div>
+<div class="herb herb3">🌱</div>
+<!-- 季节标签 -->
+<div class="season">春季养生</div>
+<!-- 装饰点 -->
+<div class="dot dot1"></div>
+<div class="dot dot2"></div>
+<div class="dot dot3"></div>
+<!-- 主要内容 -->
+<div class="content">
+<div class="title">春季中医养生</div>
+<div class="subtitle">养肝护肝 疏肝理气</div>
+<div class="divider"></div>
+<div class="footer">中医健康科普 · 娄伯恩医师</div>
+</div>
+</div>
+</body></html>

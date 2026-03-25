@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+"""
+微信公众号自动化发布最终解决方案
+使用永久素材解决 media_id 无效问题
+"""
+
+import requests
+import json
+import os
+import sys
+from pathlib import Path
+import time
+
+class WeChatAutoPublisher:
+    """微信公众号自动化发布器"""
+    
+    def __init__(self):
+        self.config = self.load_config()
+        self.appid = self.config.get('WECHAT_APPID')
+        self.appsecret = self.config.get('WECHAT_APPSECRET')
+        self.access_token = None
+        self.token_expire_time = 0
+        
+        if not self.appid or not self.appsecret:
+            raise ValueError("微信配置不完整，请检查 .env 文件")
+    
+    def load_config(self):
+        """加载配置"""
+        env_path = Path('.env')
+        config = {}
+        if env_path.exists():
+            with open(env_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        key, value = line.split('=', 1)
+                        config[key.strip()] = value.strip().strip('"').strip("'")
+        return config
+    
+    def get_access_token(self, force_refresh=False):
+        """获取 access_token"""
+        current_time = time.time()
+        
+        if not force_refresh and self.access_token and current_time < self.token_expire_time:
+            return self.access_token
+        
+        url = "https://api.weixin.qq.com/cgi-bin/token"
+        params = {
+            'grant_type': 'client_credential',
+            'appid': self.appid,
+            'secret': self.appsecret
+        }
+        
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            result = response.json()
+            
+            if 'access_token' in result:
+                self.access_token = result['access_token']
+                self.token_expire_time = current_time + result.get('expires_in', 7200) - 300  # 提前5分钟过期
+                print(f"✅ access_token 获取成功: {self.access_token[:20]}...")
+                return self.access_token
+            else:
+                print(f"❌ 获取 access_token 失败: {result}")
+                return None
+                
+        except Exception as e:
+            print(f"❌ 获取 access_token 异常: {e}")
+            return None
+    
+    def upload_permanent_image(self, image_path):
+        """上传图片为永久素材"""
+        if not os.path.exists(image_path):
+            print(f"❌ 图片文件不存在: {image_path}")
+            return None
+        
+        access_token = self.get_access_token()
+        if not access_token:
+            return None
+        
+        url = f"https://api.weixin.qq.com/cgi-bin/material/add_material"
+        params = {'access_token': access_token, 'type': 'image'}
+        
+        try:
+            with open(image_path, 'rb') as f:
+                files = {'media': f}
+                response = requests.post(url, params=params, files=files, timeout=30)
+            
+            result = response.json()
+            
+            if 'media_id' in result:
+                print(f"✅ 永久素材上传成功: {os.path.basename(image_path)}")
+                print(f"📊 media_id: {result['media_id'][:30]}...")
+                return result['media_id']
+            else:
+                print(f"❌ 永久素材上传失败: {result}")
+                return None
+                
+        except Exception as e:
+            print(f"❌ 上传图片异常: {e}")
+            return None
+    
+    def read_article_content(self, html_path):
+        """读取文章内容"""
+        if not os.path.exists(html_path):
+            print(f"❌ 文章文件不存在: {html_path}")
+            return None
+        
+        try:
+            with open(html_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            print(f"✅ 文章读取成功: {os.path.basename(html_path)}")
+            print(f"📊 内容长度: {len(content)} 字符")
+            return content
+            
+        except Exception as e:
+            print(f"❌ 读取文章异常: {e}")
+            return None
+    
+    def create_draft(self, title, author, content, thumb_media_id):
+        """创建草稿"""
+        access_token = self.get_access_token()
+        if not access_token:
+            return None
+        
+        url = f"https://api.weixin.qq.com/cgi-bin/draft/add"
+        params = {'access_token': access_token}
+        
+        # 准备文章数据
+        article = {
+            'title': title[:64],  # 微信限制标题≤64字符
+            'author': author[:8],  # 微信限制作者≤8字符
+            'digest': f'{title[:50]}...' if len(title) > 50 else title,
+            'content': content,
+            'content_source_url': '',
+            'thumb_media_id': thumb_media_id,
+            'need_open_comment': 0,
+            'only_fans_can_comment': 0
+        }
+        
+        data = {'articles': [article]}
+        
+        try:
+            response = requests.post(url, params=params, json=data, timeout=30)
+            result = response.json()
+            
+            if 'media_id' in result:
+                print(f"✅ 草稿创建成功!")
+                print(f"📊 草稿 media_id: {result['media_id']}")
+                return result['media_id']
+            else:
+                print(f"❌ 草稿创建失败: {result}")
+                return None
+                
+        except Exception as e:
+            print(f"❌ 创建草稿异常: {e}")
+            return None
+    
+    def publish_article(self, html_path, title, author, cover_image_path=None):
+        """发布文章主函数"""
+        print("=" * 60)
+        print("微信公众号自动化发布")
+        print("=" * 60)
+        
+        # 1. 读取文章内容
+        content = self.read_article_content(html_path)
+        if not content:
+            return False
+        
+        # 2. 上传封面图片（如果提供）
+        thumb_media_id = None
+        if cover_image_path and os.path.exists(cover_image_path):
+            thumb_media_id = self.upload_permanent_image(cover_image_path)
+        
+        # 如果没有提供封面或上传失败，使用默认封面
+        if not thumb_media_id:
+            print("⚠️  使用默认封面图片")
+            # 使用已有的二维码图片作为默认封面
+            default_cover = "wechat_personal_qr.jpg"
+            if os.path.exists(default_cover):
+                thumb_media_id = self.upload_permanent_image(default_cover)
+            else:
+                print("❌ 默认封面图片不存在，草稿创建可能失败")
+                # 尝试不使用封面创建草稿
+                thumb_media_id = ""
+        
+        # 3. 创建草稿
+        if thumb_media_id is not None:  # 包括空字符串
+            draft_id = self.create_draft(title, author, content, thumb_media_id)
+            if draft_id:
+                print(f"\n🎉 文章发布成功!")
+                print(f"📄 文章: {title}")
+                print(f"👤 作者: {author}")
+                print(f"🆔 草稿ID: {draft_id}")
+                return True
+            else:
+                print(f"\n❌ 文章发布失败")
+                return False
+        else:
+            print(f"\n❌ 封面图片处理失败，无法发布")
+            return False
+
+def main():
+    """主函数"""
+    print("🚀 微信公众号自动化发布系统")
+    print("📅 时间: 2026-03-19")
+    print()
+    
+    # 创建发布器实例
+    try:
+        publisher = WeChatAutoPublisher()
+    except ValueError as e:
+        print(f"❌ 初始化失败: {e}")
+        return
+    
+    # 测试发布
+    test_articles = [
+        {
+            'html_path': 'articles/auto_中医养生_春季养生.html',
+            'title': '春季中医养生指南',
+            'author': '娄医',
+            'cover': 'wechat_personal_qr.jpg'  # 使用现有图片
+        },
+        {
+            'html_path': 'articles/auto_中医食疗_养生食谱.html',
+            'title': '中医食疗养生方',
+            'author': '娄医',
+            'cover': 'wechat_personal_qr.jpg'
+        }
+    ]
+    
+    success_count = 0
+    total_count = len(test_articles)
+    
+    for i, article in enumerate(test_articles, 1):
+        print(f"\n📋 发布文章 {i}/{total_count}")
+        print(f"📄 标题: {article['title']}")
+        
+        if publisher.publish_article(
+            article['html_path'],
+            article['title'],
+            article['author'],
+            article.get('cover')
+        ):
+            success_count += 1
+        
+        # 避免 API 调用频率限制
+        if i < total_count:
+            print("\n⏳ 等待 3 秒避免频率限制...")
+            time.sleep(3)
+    
+    # 总结
+    print("\n" + "=" * 60)
+    print("发布完成总结")
+    print("=" * 60)
+    print(f"📊 总文章数: {total_count}")
+    print(f"✅ 成功数: {success_count}")
+    print(f"❌ 失败数: {total_count - success_count}")
+    print(f"📈 成功率: {success_count/total_count*100:.1f}%")
+    
+    if success_count > 0:
+        print("\n🎉 自动化发布成功!")
+        print("💡 关键解决方案:")
+        print("  1. 使用永久素材接口上传封面图片")
+        print("  2. 永久素材的 media_id 可用于草稿创建")
+        print("  3. 临时素材的 media_id 会导致错误 40007")
+    else:
+        print("\n❌ 自动化发布失败")
+        print("🔧 请检查:")
+        print("  1. 微信公众号权限设置")
+        print("  2. API 调用频率限制")
+        print("  3. 图片和文章文件路径")
+
+if __name__ == "__main__":
+    main()
